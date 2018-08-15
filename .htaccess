@@ -1,0 +1,11 @@
+Options -Indexes
+
+RewriteEngine On
+RewriteRule ^(incls|libs|func|views|models) - [F,NC,L]
+RewriteRule ^\. - [F,L,NC]
+RewriteRule \.(bak|log|old|db|sql|php_)$ - [F,NC,L]
+RewriteRule ^([^./]*)$ loader.php?_l_p=$1 [NC,QSA]
+
+
+ErrorDocument 404 "404 Не найдено"
+ErrorDocument 403 "403 недоступно"
