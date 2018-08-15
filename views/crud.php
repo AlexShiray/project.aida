@@ -144,12 +144,12 @@
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script>
 	$.datetimepicker.setLocale('ru');
-	$('.timepicker').datetimepicker({
+	$('.timepicker').datetimepicker({ // Фреймворк для jQuery
 		format:"H:i",
 		step:5,
 		datepicker:false,
 	});
-	function convertToTs(self){
+	function convertToTs(self){ // Конвертирование в unixtime из ЧЧ:ММ
 		let temp=new Date(),
 			hours_mins=self.value.split(":");
 		temp.setTime(0);
@@ -157,14 +157,14 @@
 		temp.setHours(hours_mins[0]);
 		self.nextElementSibling.nextElementSibling.value=temp.getTime()/1000;
 	}
-	function enable_week_control(self){
+	function enable_week_control(self){ // Для чекбоксов в графике
 		let controls=self.nextElementSibling.nextElementSibling;
 		controls.querySelectorAll('input').forEach(function(elem) {
 			elem.disabled=self.checked?null:true;
 			elem.value="";
 		});
 	}
-	function open_chart($busid){
+	function open_chart($busid){ // открытие модального окна графиков и его заполнение с помощью AJAX
 		var xhr=new XMLHttpRequest();
 		xhr.onload=function(){
 			if(xhr.status===200){
@@ -212,7 +212,7 @@
 		xhr.open('get','/get_charts_bus?id='+$busid);
 		xhr.send();
 	}
-	function edit_bus($busid) {
+	function edit_bus($busid) { // Открытие модального окна для добавления\изменения рейсов и заполнение его при надобности
 		var modal=document.querySelector('.modal.edit');
 		closemodal(modal.querySelector('form'));
 		if(Boolean($busid)){
@@ -256,7 +256,7 @@
 			document.querySelector('.modal.edit').classList.add('show');
 		}
 	}
-	function closemodal(modal){
+	function closemodal(modal){ // закрытие модального окна
 		modal.reset();
 		modal.querySelectorAll('.control.chart input').forEach(function(elem) {
 			elem.disabled=true;
@@ -266,7 +266,7 @@
 		});
 		document.querySelector('.modal_fade').classList.remove('show');
 	}
-	function copyChart(self){ // Копирования информации графика
+	function copyChart(self){ // Копирование информации графика
 		let controls=self.previousElementSibling,
 			enweek=controls.previousElementSibling.previousElementSibling,
 			out={};
