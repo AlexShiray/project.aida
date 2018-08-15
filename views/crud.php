@@ -54,7 +54,7 @@
 		<th>Действия</th>
 	</thead>
 	<tbody>
-		<?if(count($buses)>0)foreach($buses as $key=>$bus):?>
+		<?if((bool)$buses)foreach($buses as $key=>$bus):?>
 		<tr class="bus_item">
 			<td><?=$bus['id']?></td>
 			<td><?=$bus['price']?> тг.</td>
@@ -62,7 +62,7 @@
 			<td>
 				<a href="#" onclick="open_chart(<?=$bus['id']?>)">График поездок</a><br>
 				<a href="#" onclick="edit_bus(<?=$bus['id']?>)">Изменить</a><br>
-				<a href="/delete_bus?id=<?=$bus['id']?>">Удалить</a><br>
+				<a href="./delete_bus?id=<?=$bus['id']?>">Удалить</a><br>
 			</td>
 		</tr>
 		<?endforeach;?>
@@ -105,7 +105,7 @@
 	<?endforeach;?>
 </div>
 <div class="modal edit">
-	<form action="/save_bus" method=post>
+	<form action="./save_bus" method=post>
 		<div class="control">
 			Транспортер: <input type="text" required="" name="trans" class="form-trans">
 		</div>
@@ -209,7 +209,7 @@
 				alert("Произошла ошибка: \n\n"+xhr.status+" ("+xhr.statusText+")");
 			}
 		};
-		xhr.open('get','/get_charts_bus?id='+$busid);
+		xhr.open('get','./get_charts_bus?id='+$busid);
 		xhr.send();
 	}
 	function edit_bus($busid) { // Открытие модального окна для добавления\изменения рейсов и заполнение его при надобности
@@ -249,7 +249,7 @@
 					alert("Произошла ошибка: \n\n"+xhr.status+" ("+xhr.statusText+")");
 				}
 			};
-			xhr.open('get','/get_info_bus?id='+$busid); // Получение данных из БД
+			xhr.open('get','./get_info_bus?id='+$busid); // Получение данных из БД
 			xhr.send();
 		}else{
 			document.querySelector('.modal_fade').classList.add('show');
