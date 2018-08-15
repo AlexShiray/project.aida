@@ -128,6 +128,17 @@ class mysql_db{
 	}
 }
 
+function _sqlsafe_array($arr){
+	foreach($arr as $k=>$v){
+		if(gettype($v)==='array'){
+			$arr[$k]=_sqlsafe_array($v);
+		}else{
+			$arr[$k]=htmlspecialchars(trim(addslashes($v)));
+		}
+	}
+	return $arr;
+}
+
 function sqlsafe($arg){ 
 	if(!is_null($arg)){
 		if(isset($_POST[$arg])){
@@ -135,7 +146,11 @@ function sqlsafe($arg){
 		}elseif(isset($_GET[$arg])){
 			$out=$_GET[$arg];
 		}else return NULL;
-		return htmlspecialchars(trim(addslashes($out)));
+		if(gettype($out)==='array'){
+			return _sqlsafe_array($out);
+		}else{
+			return htmlspecialchars(trim(addslashes($out)));
+		}
 	}else{
 		return NULL;
 	}
