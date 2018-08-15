@@ -70,9 +70,39 @@
 </table>
 <div class="modal_fade" onclick="closemodal(document.querySelector('.modal.edit form'))"></div>
 <div class="modal chart">
+	<?$week_names=['mon','tue','wed','thu','fri','sat','sun'];
+	$week_rus=['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'];
+	foreach($week_names as $k=>$dayname):?>
 	<div class="control">
-		
+		<div class="control">
+			<?=$week_rus[$k]?>
+		</div>
+		<table class="chart <?=$dayname?>">
+			<tbody>
+				<tr class="selstation">
+					<td><b>Пункт отправления</b></td>
+					<td class="val"></td>
+				</tr>
+				<tr class="seltime">
+					<td><b>Время отправления</b></td>
+					<td class="val" data-ttd_action="%hou%:%min%"></td>
+				</tr>
+				<tr class="recstation">
+					<td><b>Пункт прибытия</b></td>
+					<td class="val"></td>
+				</tr>
+				<tr class="rectime">
+					<td><b>Время Прибытия</b></td>
+					<td class="val" data-ttd_action="%hou%:%min%"></td>
+				</tr>
+				<tr class="duration">
+					<td><b>Время поездки</b></td>
+					<td class="val" data-ttd_action="%hou%:%min%" data-tdd_utc=true></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+	<?endforeach;?>
 </div>
 <div class="modal edit">
 	<form action="/save_bus" method=post>
@@ -86,111 +116,23 @@
 		<div class="control">
 			<b>График поездок</b>
 		</div>
+		<?foreach($week_names as $k=>$dayname):?>
 		<div class="control">
-			<input type="checkbox" id="mon" value="mon" name="en_week[0]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="mon">Понедельник</label>
+			<input type="checkbox" id="<?=$dayname?>" value="<?=$dayname?>" name="en_week[<?=$k?>]" class="en_week_checkbox" onchange="enable_week_control(this)">
+			<label for="<?=$dayname?>"><?=$week_rus[$k]?></label>
 			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[mon]"><br>
+				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[<?=$dayname?>]"><br>
 				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[mon]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[mon]"><br>
+				<input disabled="" type="hidden" name="week_seltime[<?=$dayname?>]">
+				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[<?=$dayname?>]"><br>
 				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[mon]">
+				<input disabled="" type="hidden" name="week_rectime[<?=$dayname?>]">
 			</div>
 			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
 			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
 		</div>
 		<hr>
-		<div class="control">
-			<input type="checkbox" id="tue" value="tue" name="en_week[1]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="tue">Вторник</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[tue]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[tue]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[tue]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[tue]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
-		<div class="control">
-			<input type="checkbox" id="wed" value="wed" name="en_week[2]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="wed">Среда</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[wed]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[wed]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[wed]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[wed]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
-		<div class="control">
-			<input type="checkbox" id="thu" value="thu" name="en_week[3]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="thu">Четверг</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[thu]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[thu]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[thu]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[thu]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
-		<div class="control">
-			<input type="checkbox" id="fri" value="fri" name="en_week[4]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="fri">Пятница</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[fri]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[fri]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[fri]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[fri]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
-		<div class="control">
-			<input type="checkbox" id="sat" value="sat" name="en_week[5]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="sat">Суббота</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[sat]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[sat]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[sat]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[sat]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
-		<div class="control">
-			<input type="checkbox" id="sun" value="sun" name="en_week[6]" class="en_week_checkbox" onchange="enable_week_control(this)">
-			<label for="sun">Воскресенье</label>
-			<div class="control chart">
-				Пункт отправления: <input class="selstation" required="" disabled="" type="text" name="week_selstation[sun]"><br>
-				Время отправления: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker seltime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_seltime[sun]">
-				Пункт прибытия: <input class="recstation" required="" disabled="" type="text" name="week_recstation[sun]"><br>
-				Время прибытия: <input data-ttd_action="%hou%:%min%" required="" disabled="" type="text" readonly="" class="timepicker rectime" onchange="convertToTs(this)"><br>
-				<input disabled="" type="hidden" name="week_rectime[sun]">
-			</div>
-			<button type=button class="copy" onclick="copyChart(this);">Копировать</button>
-			<button type=button class="paste" onclick="pasteChart(this);">Вставить</button>
-		</div>
-		<hr>
+		<?endforeach;?>
 		<div class="control">
 			<input type="hidden" name="editid" value="0" class="edit_id_hidden">
 			<input type=submit value="Сохранить">
@@ -223,8 +165,52 @@
 		});
 	}
 	function open_chart($busid){
-		document.querySelector('.modal_fade').classList.add('show');
-		document.querySelector('.modal.chart').classList.add('show');
+		var xhr=new XMLHttpRequest();
+		xhr.onload=function(){
+			if(xhr.status===200){
+				var d=JSON.parse(xhr.response),
+					tables=['mon','thu','wed','tue','fri','sat','sun'];
+				if(d.status===true){
+					document.querySelectorAll('.chart').forEach(function(elem) {
+						elem.parentElement.style.display="initial";
+					});
+					d.bus_chart.forEach(function(elem) {
+						tables.splice(tables.indexOf(elem.week_day),1);
+						let table=document.querySelector('.chart.'+elem.week_day),
+							cont=table.querySelector('tbody'),
+							selstation=cont.querySelector('.selstation .val'),
+							seltime=cont.querySelector('.seltime .val'),
+							recstation=cont.querySelector('.recstation .val'),
+							rectime=cont.querySelector('.rectime .val'),
+							duration=cont.querySelector('.duration .val');
+						selstation.innerText=elem.sel_station;
+						seltime.innerText=elem.sel_time;
+						recstation.innerText=elem.rec_station;
+						rectime.innerText=elem.rec_time;
+						if(elem.rec_time>=elem.sel_time){
+							duration.innerText=(parseInt(elem.rec_time)-parseInt(elem.sel_time));
+						}else{
+							duration.innerText=((86400-parseInt(elem.sel_time))+parseInt(elem.rec_time));
+						}
+						seltime.classList.add('timestamp_to_date');
+						rectime.classList.add('timestamp_to_date');
+						duration.classList.add('timestamp_to_date');
+						timestampsToDate();
+					});
+					tables.forEach(function(elem) {
+						document.querySelector('.chart.'+elem).parentElement.style.display='none';
+					});
+					document.querySelector('.modal_fade').classList.add('show');
+					document.querySelector('.modal.chart').classList.add('show');
+				}else{
+					alert("Произошла ошибка: \n\n"+d.error);
+				}
+			}else{
+				alert("Произошла ошибка: \n\n"+xhr.status+" ("+xhr.statusText+")");
+			}
+		};
+		xhr.open('get','/get_charts_bus?id='+$busid);
+		xhr.send();
 	}
 	function edit_bus($busid) {
 		var modal=document.querySelector('.modal.edit');

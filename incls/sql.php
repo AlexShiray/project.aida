@@ -75,6 +75,26 @@ class mysql_db{
 			$_out=NULL;
 			if(count(preg_split("/;/", $query))-1>1) {
 				$_result=$this->mys->multi_query($query);
+				if(gettype($_result)=='boolean'){
+					$insertid=$this->mys->insert_id;
+					if((bool)$insertid){
+						return $insertid;
+					}
+					if((bool)$_result){
+						// var_dump($_result);
+						if($_result===true){
+							$_out=$_result;
+						}else{
+							$_out=$_result->fetch_all($type);
+							// var_dump($_out);
+							$_result->free();
+						}
+					}else{
+						if((bool)$this->mys->error){
+							$this->throwerror($this->mys->error);
+						}else $_out=$_result;
+					}
+				}
 				$_i=0;
 				$_out=[];
 				while(true){
@@ -97,8 +117,13 @@ class mysql_db{
 				}
 			}else{
 				$_result=$this->mys->query($query);
+				$insertid=$this->mys->insert_id;
+				// var_dump($_result,$insertid);
+				if((bool)$insertid){
+					return $insertid;
+				}
 				if((bool)$_result){
-					// var_dump($_result);
+					//var_dump($_result->fetch_array());
 					if($_result===true){
 						$_out=$_result;
 					}else{
@@ -113,9 +138,7 @@ class mysql_db{
 					}else $_out=$_result;
 				}
 			}
-			if(gettype($_out)==='boolean'){
-				return $_out;
-			}else
+			// var_dump($_out);
 			if(count($_out)==0){
 				return NULL;
 			}else{
