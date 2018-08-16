@@ -139,6 +139,7 @@ class mysql_db{
 				}
 			}
 			// var_dump($_out);
+			if(gettype($_out)==='boolean') return $_out;
 			if(count($_out)==0){
 				return NULL;
 			}else{
